@@ -49,7 +49,7 @@ void *run_3(void *arg) {
 
 int main(int argc, char *argv[]) {
     if(!g_thread_supported())
-    g_thread_init(NULL);
+        g_thread_init(NULL);
     mloop = g_main_loop_new(NULL, FALSE);
 
     mutex = g_mutex_new();
