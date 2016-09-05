@@ -16,7 +16,7 @@ struct _Canvas {
 };
 
 Canvas *canvas_new(int w, int h, int bg) {
-    Canvas *canvas = (Canvas *)malloc(sizeof(Canvas)); 
+    Canvas *canvas = (Canvas *)malloc(sizeof(Canvas));
     memset(canvas, 0, sizeof(Canvas));
 
     canvas->w = w;
@@ -41,7 +41,7 @@ bool canvas_add(Canvas *canvas, Shape *shape) {
         return false;
     }
 
-    canvas->shapes[canvas->count] = shape; 
+    canvas->shapes[canvas->count] = shape;
     canvas->count++;
 
     return true;
@@ -54,7 +54,7 @@ void canvas_clear_bg(Canvas *canvas) {
 
 void canvas_update(Canvas *canvas) {
     assert(canvas);
-    
+
     canvas_clear_bg(canvas);
 
     int i = 0;

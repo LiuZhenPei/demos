@@ -22,16 +22,16 @@ Circle *circle_new(int x, int y, int r) {
 static void circle_destroy(Shape *shape) {
     assert(shape);
 
-    Circle *thiz = (Circle *)shape;
-    free(thiz);
+    Circle *this = (Circle *)shape;
+    free(this);
 }
 
 static void circle_draw(Shape *shape) {
     assert(shape);
 
-    Circle *thiz = (Circle *)shape;
+    Circle *this = (Circle *)shape;
     printf("circle: (X-%d)^2 + (Y-%d)^2 = %d\n",
-            shape_x((Shape *)thiz), shape_y((Shape *)thiz), thiz->r);
+            shape_x((Shape *)this), shape_y((Shape *)this), this->r);
 }
 
 int circle_radius(Circle *circle) {
