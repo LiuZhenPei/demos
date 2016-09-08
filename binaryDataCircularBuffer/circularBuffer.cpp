@@ -1,26 +1,7 @@
 
+#include "circularBuffer.h"
 #include <string.h>
 #include <algorithm> // for std::min
-#include <iostream>
-
-using namespace std;
-
-class CircularBuffer {
-    public:
-        CircularBuffer(size_t capacity);
-        ~CircularBuffer();
-
-        size_t size() const { return size_; }
-        size_t capacity() const { return capacity_; }
-        // Return number of bytes written.
-        size_t write(const char *data, size_t bytes);
-        // Return number of bytes read.
-        size_t read(char *data, size_t bytes);
-
-    private:
-        size_t beg_index_, end_index_, size_, capacity_;
-        char *data_;
-};
 
 CircularBuffer::CircularBuffer(size_t capacity)
     : beg_index_(0),
@@ -85,28 +66,4 @@ size_t CircularBuffer::read(char *data, size_t bytes) {
 
     size_ -= bytes_to_read;
     return bytes_to_read;
-}
-
-int main() {
-    char tmpBuf[1024];
-    char helloBuf[] = "hello world"; // 11
-
-    CircularBuffer buf(1024);
-
-    cout << "capacity: " << buf.capacity() << endl;
-    cout << "size: " << buf.size() << endl;
-
-    int nwrite = buf.write(helloBuf, 11);
-    cout << "nwrite: " << nwrite << endl;
-
-    nwrite = buf.write(tmpBuf, 1024);
-    cout << "nwrite: " << nwrite << endl;
-
-    int nread = buf.read(tmpBuf, 1020);
-    cout << "nread: " << nread << endl;
-
-    nread = buf.read(tmpBuf, 100);
-    cout << "nread: " << nread << endl;
-
-    return 0;
 }

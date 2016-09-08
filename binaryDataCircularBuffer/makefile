@@ -1,15 +1,15 @@
-CC 		 = g++
+CC       = g++
 CFLAGS   = -Wall -g
 INCLUDES = -I.
-LDFLAGS	 = 
+LDFLAGS  =
 VPATH    = .
-OBJS	 = 
+OBJS     = circularBuffer.o
 
-TARGETS  = circularBuffer
+TARGETS  = main
 
 all : $(TARGETS)
 
-circularBuffer:circularBuffer.o $(OBJS)
+main:main.o $(OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o:%.c
