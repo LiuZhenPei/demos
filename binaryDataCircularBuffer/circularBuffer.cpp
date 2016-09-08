@@ -9,16 +9,20 @@ CircularBuffer::CircularBuffer(size_t capacity)
     size_(0),
     capacity_(capacity) {
     data_ = new char[capacity];
+    pthread_mutex_init(&read_write_mutex_, NULL);
 }
 
 CircularBuffer::~CircularBuffer() {
     delete [] data_;
+    pthread_mutex_destroy(&read_write_mutex_);
 }
 
 // Return bytes that actually write in, would not write if not space left.
 size_t CircularBuffer::write(const char *data, size_t bytes) {
     if (bytes == 0)
         return 0;
+
+    pthread_mutex_lock(&read_write_mutex_);
 
     size_t capacity = capacity_;
     size_t bytes_to_write = std::min(bytes, capacity - size_);
@@ -39,12 +43,18 @@ size_t CircularBuffer::write(const char *data, size_t bytes) {
     }
 
     size_ += bytes_to_write;
+
+    pthread_mutex_unlock(&read_write_mutex_);
+
     return bytes_to_write;
 }
 
 // Return bytes that read.
 size_t CircularBuffer::read(char *data, size_t bytes) {
-    if (bytes == 0) return 0;
+    if (bytes == 0)
+        return 0;
+
+    pthread_mutex_lock(&read_write_mutex_);
 
     size_t capacity = capacity_;
     size_t bytes_to_read = std::min(bytes, size_);
@@ -65,5 +75,8 @@ size_t CircularBuffer::read(char *data, size_t bytes) {
     }
 
     size_ -= bytes_to_read;
+
+    pthread_mutex_unlock(&read_write_mutex_);
+
     return bytes_to_read;
 }

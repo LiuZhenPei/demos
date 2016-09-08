@@ -3,6 +3,7 @@
 #define _CIRCULAR_BUFFER_H_
 
 #include <stdlib.h>
+#include <pthread.h>
 
 class CircularBuffer {
     public:
@@ -19,6 +20,7 @@ class CircularBuffer {
     private:
         size_t beg_index_, end_index_, size_, capacity_;
         char *data_;
+        pthread_mutex_t read_write_mutex_;
 };
 
 #endif
