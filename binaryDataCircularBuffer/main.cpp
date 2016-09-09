@@ -24,6 +24,12 @@ int main() {
     int nread = buf.read(tmpBuf, 1020);
     cout << "nread: " << nread << endl;
 
+    buf.clear();
+    cout << "size: " << buf.size() << endl;
+
+    nwrite = buf.write(tmpBuf, 50);
+    cout << "nwrite: " << nwrite << endl;
+
     nread = buf.read(tmpBuf, 100);
     cout << "nread: " << nread << endl;
 

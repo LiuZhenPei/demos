@@ -17,6 +17,24 @@ CircularBuffer::~CircularBuffer() {
     pthread_mutex_destroy(&read_write_mutex_);
 }
 
+size_t CircularBuffer::size() const {
+    return size_;
+}
+
+size_t CircularBuffer::capacity() const {
+    return capacity_;
+}
+
+void CircularBuffer::clear() {
+    pthread_mutex_lock(&read_write_mutex_);
+
+    beg_index_ = 0;
+    end_index_ = 0;
+    size_      = 0;
+
+    pthread_mutex_unlock(&read_write_mutex_);
+}
+
 // Return bytes that actually write in, would not write if not space left.
 size_t CircularBuffer::write(const char *data, size_t bytes) {
     if (bytes == 0)
