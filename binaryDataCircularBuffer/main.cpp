@@ -1,5 +1,5 @@
 
-#include "circularBuffer.h"
+#include "CircularBuffer.h"
 #include <iostream>
 
 // Thanks to: http://www.asawicki.info/news_1468_circular_buffer_of_raw_binary_data_in_c.html

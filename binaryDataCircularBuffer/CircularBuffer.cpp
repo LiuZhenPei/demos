@@ -1,5 +1,5 @@
 
-#include "circularBuffer.h"
+#include "CircularBuffer.h"
 #include <string.h>
 #include <algorithm> // for std::min
 

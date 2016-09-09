@@ -3,7 +3,7 @@ CFLAGS   = -Wall -g
 INCLUDES = -I.
 LDFLAGS  =
 VPATH    = .
-OBJS     = circularBuffer.o
+OBJS     = CircularBuffer.o
 
 TARGETS  = main
 
