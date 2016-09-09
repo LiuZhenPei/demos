@@ -24,7 +24,7 @@ class CircularBuffer {
         size_t size_;
         size_t capacity_;
         char *data_;
-        pthread_mutex_t read_write_mutex_;
+        pthread_rwlock_t rw_lock_;
 };
 
 #endif

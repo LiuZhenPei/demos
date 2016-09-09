@@ -1,7 +1,7 @@
 CC       = g++
 CFLAGS   = -Wall -g
 INCLUDES = -I.
-LDFLAGS  =
+LDFLAGS  = -lpthread
 VPATH    = .
 OBJS     = CircularBuffer.o
 
