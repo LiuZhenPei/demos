@@ -1,4 +1,4 @@
-CC       = g++
+CC       = gcc
 CFLAGS   = -Wall -g
 INCLUDES = -I.
 LDFLAGS  = -lpthread
