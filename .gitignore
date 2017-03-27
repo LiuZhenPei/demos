@@ -1,0 +1,4 @@
+#ignore the file with the ending of *.a,*.o,*.d
+*.[oa]
+*.d
+*~
