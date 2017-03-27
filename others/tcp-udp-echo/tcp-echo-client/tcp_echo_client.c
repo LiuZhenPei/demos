@@ -3,6 +3,7 @@
 #include <string.h>
 #include <strings.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
@@ -12,21 +13,23 @@
 
 int main(int argc, char *argv[]) {
     int conn_fd, port, ret = 0;
+    const char *server_ip;
     char buf[BUFFER_SIZE];
     struct sockaddr_in serv_addr;
 
     // Check the arguments.
-    if (argc != 2) {
-        printf("Usage: %s portnumber\n", argv[0]);
+    if (argc != 3) {
+        printf("Usage: %s server_ip port_number\n", argv[0]);
         return -1;
     }
 
     // Initialize address.
-    port = atoi(argv[1]);
+    server_ip = argv[1];
+    port = atoi(argv[2]);
     memset(&serv_addr, 0, sizeof(struct sockaddr_in));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
-    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_addr.s_addr = inet_addr(server_ip);
 
     // Create socket.
     if ((conn_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
