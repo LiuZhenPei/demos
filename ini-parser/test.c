@@ -32,7 +32,7 @@ int main()
 	//4,获取dictionary对象的 第n个section的名字 
 	for (i = 0; i < sec_count; i++)
    	{
-        printf("%s\n", iniparser_getsecname(dic, i)); 
+        	printf("%s\n", iniparser_getsecname(dic, i)); 
 	}
 
 	//5,保存dictionary对象一个section到file 
@@ -75,7 +75,7 @@ int main()
 	{
 		printf("Succeed to reset!\n");
 		x = iniparser_getint(dic,"file02:speed",y);
-	    printf("(int)   file02:speed = %d\n",x);
+		printf("(int)   file02:speed = %d\n",x);
 	}
 	else
 		printf("Failed to reset!\n");
@@ -104,7 +104,7 @@ int main()
 	printf("Key_Hash_Val = %d\n",hs);
 
 	//2,创建dictionary对象
-	 dictionary *New_Dic = dictionary_new(512);
+	dictionary *New_Dic = dictionary_new(512);
 
 	//3,设置dictionary对象的key值 
 	int judge = dictionary_set(dic,"file00:width","1234");
