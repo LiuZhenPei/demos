@@ -4,6 +4,8 @@
 #include <string>
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/reader.h"
 
 using namespace std;
 using namespace rapidjson;
@@ -32,6 +34,7 @@ void basic_usage(const char *data){
     Document doc; 
     //parser json
     doc.Parse(data);
+
     cout<<"\n###Query DOM###"<<endl;
     //query object
     assert(doc.IsObject());
@@ -73,26 +76,32 @@ void basic_usage(const char *data){
         cout<<"Type of member "<<iter->name.GetString()<<" is "
             <<kTypeNames[iter->value.GetType()]<<endl;
 
-
     cout<<"\n###Modify DOM###"<<endl;
     //modify Str_val
-    doc["Str_val"] = "Modify Str_val";
+    doc["Str_val"] = "Modify Str_val"; 
+    assert(doc.HasMember("Str_val"));
+    assert(doc["Str_val"].IsString());
+    cout<<"Str_val = "<<doc["Str_val"].GetString()<<endl;
+    cout<<"The length of Str_val = "<<doc["Str_val"].GetStringLength()<<endl;
     //add value to Array_val
     Value &a = doc["Array_val"];
     Document::AllocatorType &allocator = doc.GetAllocator();
     for(int i = 5;i <= 7;i++)
         a.PushBack(i,allocator);
+    assert(doc.HasMember("Array_val"));
+    assert(doc["Array_val"].IsArray());
+    for(SizeType i = 0;i < a.Size();i++)
+        cout<<"Array_val["<<i+1<<"] = "<<a[i].GetInt()<<endl;
     //add a string to DOM
     Value Name;
     char buf[10];
     int len = sprintf(buf,"%s","Allen");
     Name.SetString(buf,static_cast<SizeType>(len),doc.GetAllocator());
-    doc.AddMember("Name",Name,doc.GetAllocator());
-    
+    doc.AddMember("Author",Name,doc.GetAllocator());
+
     cout<<"\n###Reformat JSON###"<<endl;
     StringBuffer sb;
-    PrettyWriter<StringBuffer> writer(sb);
-    doc.Accept(writer);
+    PrettyWriter<StringBuffer> Writer(sb);
+    doc.Accept(Writer);
     puts(sb.GetString());
-
 }
