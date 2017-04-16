@@ -1,7 +1,7 @@
 #include <iostream>
-#include <cstdio>
 #include <cassert>
 #include <string>
+#include <cstdio>
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/writer.h"
@@ -22,28 +22,34 @@ const char *json = "{"
 
 void basic_usage(const char *data);
 void write_json();
-
+void read_json(const char *data);
 
 int main(){
-    cout<<"******************************"<<endl;
-    cout<<"******Basic Usage Of DOM******"<<endl;
-    cout<<"******************************"<<endl;
+    cout<<"\n******************************"<<endl;
+    cout<<"*******Basic Usage Of DOM*******"<<endl;
+    cout<<"******************************\n"<<endl;
     basic_usage(json);
-    cout<<"******************************"<<endl;
-    cout<<"**********Writer JSON*********"<<endl;
-    cout<<"******************************"<<endl;
+    cout<<"\n******************************"<<endl;
+    cout<<"***********Write JSON***********"<<endl;
+    cout<<"******************************\n"<<endl;
     write_json();
+    cout<<"\n******************************"<<endl;
+    cout<<"************Read JSON***********"<<endl;
+    cout<<"******************************\n"<<endl;
+    read_json(json);
 
     return 0;
 }
 
-
+/***************/
+/***Basic Use***/
+/***************/
 void basic_usage(const char *data){
     Document doc; 
     //parser json
     doc.Parse(data);
 
-    cout<<"\n###Query DOM###"<<endl;
+    cout<<"###Query DOM###"<<endl;
     //query object
     assert(doc.IsObject());
     //query string
@@ -114,7 +120,9 @@ void basic_usage(const char *data){
     puts(sb.GetString());
 }
 
-
+/****************/
+/***Write JSON***/
+/****************/
 void write_json(){
     StringBuffer strbuf;
     PrettyWriter<StringBuffer> Writer(strbuf);
@@ -141,4 +149,46 @@ void write_json(){
     Writer.EndObject();
 
     cout<<strbuf.GetString()<<endl;
+}
+
+
+/***************/
+/***Read JSON***/
+/***************/
+struct MyHandler{
+    bool Null(){ cout << "Null()" << endl; return true; }
+    bool Bool(bool b){ cout << "Bool(" << boolalpha << b << ")" << endl; return true;}
+    bool Int(int i){ cout << "Int(" << i << ")" << endl; return true;}
+    bool Int64(int64_t i){ cout << "Int64(" << i << ")" << endl; return true;}
+    bool Uint(unsigned u){ cout << "Uint(" << u << ")" << endl; return true;}
+    bool Uint64(uint64_t u){ cout << "Uint64(" << u <<")" << endl; return true;}
+    bool Double(double d){ cout << "Double(" << d << ")" << endl; return true;}
+    bool RawNumber(const char *str, SizeType length, bool copy){
+        cout<<"Number("<< str << ", " << length << ", " << boolalpha << copy << ")" << endl;
+        return true;
+    }
+    bool String(const char *str, SizeType length, bool copy){
+        cout << "String(" << str << ", " << length << ", " << boolalpha << copy << ")" << endl;
+        return true;
+    }
+    bool StartObject(){ cout << "StartObject()" << endl; return true;}
+    bool Key(const char *str, SizeType length, bool copy){
+        cout << "Key(" << str << ", " << length << ", " << boolalpha << copy << ")" << endl;
+        return true;
+    }
+    bool EndObject(SizeType memberCount){ cout << "EndObject(" << memberCount << ")" <<endl;
+        return true;
+    }
+    bool StartArray(){ cout << "StartArray()" << endl; return true; }
+    bool EndArray(SizeType elementCount){ cout << "EndArray(" << elementCount << ")" << endl;
+        return true;
+    }
+};
+
+void read_json(const char *data)
+{
+    MyHandler handler;
+    Reader reader;
+    StringStream ss(data);
+    reader.Parse(ss, handler);
 }
