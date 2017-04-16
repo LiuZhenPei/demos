@@ -6,6 +6,7 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/reader.h"
+#include "rapidjson/stringbuffer.h"
 
 using namespace std;
 using namespace rapidjson;
@@ -20,12 +21,19 @@ const char *json = "{"
 "}";
 
 void basic_usage(const char *data);
+void write_json();
+
 
 int main(){
     cout<<"******************************"<<endl;
     cout<<"******Basic Usage Of DOM******"<<endl;
     cout<<"******************************"<<endl;
     basic_usage(json);
+    cout<<"******************************"<<endl;
+    cout<<"**********Writer JSON*********"<<endl;
+    cout<<"******************************"<<endl;
+    write_json();
+
     return 0;
 }
 
@@ -104,4 +112,33 @@ void basic_usage(const char *data){
     PrettyWriter<StringBuffer> Writer(sb);
     doc.Accept(Writer);
     puts(sb.GetString());
+}
+
+
+void write_json(){
+    StringBuffer strbuf;
+    PrettyWriter<StringBuffer> Writer(strbuf);
+    //write int32_t data
+    Writer.StartObject();
+    Writer.Key("Date");
+    Writer.Int(20170416);
+    //write string data
+    Writer.Key("Weather");
+    Writer.String("cloudy day");
+    Writer.Key("Temp");
+    Writer.String("29/22°C");
+    //write bool data
+    Writer.Key("Suitability to play?");
+    Writer.Bool(true);
+    //write array data
+    Writer.Key("9~12am AQI");
+    Writer.StartArray();
+    Writer.Uint(65);
+    Writer.Uint(65);
+    Writer.Uint(65);
+    Writer.Uint(63);
+    Writer.EndArray();
+    Writer.EndObject();
+
+    cout<<strbuf.GetString()<<endl;
 }
