@@ -8,7 +8,7 @@ OBJS     =
 TARGETS  = system_ls_root fork_process fork_and_exec_process \
 		   clone_thread pthread_tid_and_pid pthread_create \
 		   pthread_create_with_param pthread_join pthread_return_values \
-		   pthread_mutex
+		   pthread_mutex pthread_cond
 
 all : $(TARGETS)
 
@@ -40,6 +40,9 @@ pthread_return_values:pthread_return_values.o $(OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 pthread_mutex:pthread_mutex.o $(OBJS)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+pthread_cond:pthread_cond.o $(OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o:%.c
