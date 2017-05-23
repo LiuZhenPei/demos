@@ -13,7 +13,8 @@ INC    = -I./muduo/
 $(TARGET):$(OBJS)
 	$(GCC) $(INC) -o $@ $^ $(LIB)
 
-.PHONY:clean
+.PHONY:rebuild clean
+rebuild:clean $(TARGET)
 clean:
 	rm -rf $(TARGET) $(OBJS)
 
