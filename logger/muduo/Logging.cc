@@ -1,8 +1,8 @@
-#include <muduo/base/Logging.h>
+#include <Logging.h>
 
-#include <muduo/base/CurrentThread.h>
-#include <muduo/base/Timestamp.h>
-#include <muduo/base/TimeZone.h>
+#include <CurrentThread.h>
+#include <Timestamp.h>
+#include <TimeZone.h>
 
 #include <errno.h>
 #include <stdio.h>
@@ -206,7 +206,7 @@ void Logger::setLogLevel(Logger::LogLevel level)
   g_logLevel = level;
 }
 
-void Logger::setOutput(OutputFunc out)/*只需要改变out函数就能改变输出位置*/
+void Logger::setOutput(OutputFunc out)
 {
   g_output = out;
 }
