@@ -1,19 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Set up the rectangle border size */
-const int border = 5;
-
 int nv12_border(char *pic, int pic_w, int pic_h, int rect_x, int rect_y, int rect_w, int rect_h, int R, int G, int B)
 {
-    FILE *fpic = fopen(pic, "rb+");
-    FILE *fout = fopen("outputFile.nv12", "wb+");
-
-    /* Allocate memory for NV12 */
-    unsigned char *buf = (unsigned char *)malloc(pic_w * pic_h * 3 / 2);
-
-    /* Read the file memory to buffer */
-    fread(buf, 1, pic_w * pic_h * 3 / 2, fpic);
+    /* Set up the rectangle border size */
+    const int border = 5;
 
     /* RGB convert YUV */
     int Y, U, V;
@@ -25,7 +16,8 @@ int nv12_border(char *pic, int pic_w, int pic_h, int rect_x, int rect_y, int rec
     int j, k;
     for(j = rect_y; j < rect_y + rect_h; j++){
         for(k = rect_x; k < rect_x + rect_w; k++){
-            if (k < (rect_x + border) || k > (rect_x + rect_w - border) || j < (rect_y + border) || j > (rect_y + rect_h - border)){
+            if (k < (rect_x + border) || k > (rect_x + rect_w - border) ||\
+                    j < (rect_y + border) || j > (rect_y + rect_h - border)){
 
                 /* Components of YUV's storage address index */
                 int y_index = j * pic_w + k;
@@ -33,30 +25,46 @@ int nv12_border(char *pic, int pic_w, int pic_h, int rect_x, int rect_y, int rec
                 int v_index = u_index + 1;
 
                 /* set up YUV's conponents value of rectangle border */
-                buf[y_index] =  Y ;
-                buf[u_index] =  U ;
-                buf[v_index] =  V ;
+                pic[y_index] =  Y ;
+                pic[u_index] =  U ;
+                pic[v_index] =  V ;
             }
         }
     }
-
-    /* Flush the buffer to the output file */
-    fwrite(buf, 1, pic_w * pic_h * 3 / 2, fout);
-
-    /* Don't forget to free the allocation memory */
-    free(buf);
-
-    /* close the file */
-    fclose(fpic);
-    fclose(fout);
 
     return 0;
 }
 
 int main()
 {
-    char* picture = "videotestsrc_1920x1080.nv12";
-    nv12_border(picture, 1920, 1080, 1000, 500, 150, 170, 0, 0, 255);
+    /* Set up the nv12's pixel size */
+    const int pic_w  = 1920;
+    const int pic_h  = 1080;
+
+    char *input  = "videotestsrc_1920x1080.nv12";
+    char *output = "outputFile.nv12";
+
+    FILE *fin  = fopen(input,  "rb+");
+    FILE *fout = fopen(output, "wb+");
+
+    /* Allocate memory for nv12 */
+    unsigned char *buf = (unsigned char *)malloc(pic_w * pic_h * 3 / 2);
+
+    /* Read file data to buffer */
+    fread(buf, 1, pic_w * pic_h * 3 / 2, fin);
+
+    /* Draw rectangle border to nv12 */
+    nv12_border(buf, pic_w, pic_h, 500, 500, 300, 400, 0, 0, 255);
+
+    /* Write data of buf to fout */
+    fwrite(buf, 1, pic_w * pic_h * 3 / 2, fout);
+
+    /* Free the allocation memory */
+    free(buf);
+
+    /* Close the file */
+    fclose(fin);
+    fclose(fout);
 
     return 0;
 }
