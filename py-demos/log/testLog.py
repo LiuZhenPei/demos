@@ -14,21 +14,14 @@ exeFile  = argv0[2:]; # remove "./"
 # 2017-07-05 14:53:14,702 testLog.py [line:45] [ERROR:40] This is error at ./testLog.py
 outputFormatter = '%(asctime)s %(filename)s [line:%(lineno)d] [%(levelname)s:%(levelno)s] %(message)s at %(pathname)s'
 
-# 保存日志数据的文件名
-# 2017-07-05|15:20:34-testLog.py.log.
-outputFileName = './{date}-{name}.log'.format(name = exeFile, date = time.strftime("%Y-%m-%d|%H:%M:%S", time.localtime()))
-
 # 回滚日志文件名格式
 # 2017-07-05-testLog.py.log.xx
 rotatingFileName = './{date}-{name}.log'.format(name = exeFile, date = time.strftime("%Y-%m-%d", time.localtime()))
 
 # 通过logging.basicConfig函数对日志的输出格式及方式做相关配置
-# 打印DEBUG或更高级别的日志信息到文件
 logging.basicConfig(level = logging.DEBUG,
-        format   = outputFormatter,
-        datefmt  = '%a, %d %b %Y %H:%M:%S',
-        filename = outputFileName,
-        filemode = 'w')
+        filename = '/dev/null')
+
 
 # 定义一个streamerHandler,将ERROR级别或更高的日志信息打印到终端
 console = logging.StreamHandler()
@@ -45,13 +38,20 @@ formatter = logging.Formatter(outputFormatter)
 Rthandler.setFormatter(formatter)
 logging.getLogger('').addHandler(Rthandler)
 
+'''
+logging = logging.getLogger('')
+logging.setLevel(logging.INFO)
+Rthandler = RotatingFileHandler(rotatingFileName, maxBytes = 5 * 1024 * 1024, backupCount = 10)
+formatter = logging.Formatter(outputFormatter)
+Rthandler.setFormatter(formatter)
+'''
+
 #####################################
 # ************** 测试 ************* #
 #####################################
 
 # 将 "ERROR" 及以上级别的打印到终端
 # 将 "INFO " 及以上级别的进行回滚
-# 将 "DEBUG" 及以上级别的打印到文件
 for i in range(1,20):
     logging.error('This is error message!')
     for j in range(1,10):
