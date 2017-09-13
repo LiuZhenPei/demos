@@ -12,12 +12,14 @@ int nv12_border(char *pic, int pic_w, int pic_h, int rect_x, int rect_y, int rec
     U = -0.1687 * R + 0.3313 * G + 0.5    * B + 128;
     V =  0.5    * R - 0.4187 * G - 0.0813 * B + 128;
 
+    printf("%d %d %d\n", Y, U ,V);
+
     /* Locking the scope of rectangle border range */
     int j, k;
     for(j = rect_y; j < rect_y + rect_h; j++){
         for(k = rect_x; k < rect_x + rect_w; k++){
             if (k < (rect_x + border) || k > (rect_x + rect_w - border) ||\
-                    j < (rect_y + border) || j > (rect_y + rect_h - border)){
+                j < (rect_y + border) || j > (rect_y + rect_h - border)){
 
                 /* Components of YUV's storage address index */
                 int y_index = j * pic_w + k;
